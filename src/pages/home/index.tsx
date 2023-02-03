@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { LIMIT_REQUEST } from 'appConstants';
 import { LoadingItem } from 'components';
 import LaunchItem from 'components/LaunchItem';
 import { useRedux } from 'hooks';
@@ -9,25 +10,26 @@ import { fetchLaunchesRequest, clearState } from 'redux/slice';
 
 function Home() {
   const { dispatch, appSelector } = useRedux();
-  const { launches } = appSelector<RootStateType>((state) => state.root);
+  const { launches, canLoadMore } = appSelector<RootStateType>((state) => state.root);
 
   const loadMore = useCallback(
     (index: number) => {
-      dispatch(
-        fetchLaunchesRequest({
-          limit: 20,
-          offset: index + 1,
-        })
-      );
+      canLoadMore &&
+        dispatch(
+          fetchLaunchesRequest({
+            limit: LIMIT_REQUEST,
+            offset: index + 1,
+          })
+        );
     },
-    [dispatch]
+    [canLoadMore, dispatch]
   );
 
   useEffect(() => {
     dispatch(
       fetchLaunchesRequest({
-        limit: 20,
-        offset: 50,
+        limit: LIMIT_REQUEST,
+        offset: 0,
       })
     );
     return () => {
@@ -43,8 +45,8 @@ function Home() {
           data={launches}
           endReached={loadMore}
           overscan={200}
-          itemContent={(index, item) => <LaunchItem {...item} />}
-          components={{ Footer: LoadingItem }}
+          itemContent={(_index, item) => <LaunchItem {...item} />}
+          components={{ Footer: () => <LoadingItem canLoadMore={canLoadMore} /> }}
         />
       </Box>
     </Box>

@@ -2,6 +2,7 @@ export type RootStateType = {
   isLoading: boolean;
   launches: ILaunch[];
   errorMessage: string;
+  canLoadMore: boolean;
 };
 
 export interface FetchLaunchesPayload {
@@ -17,7 +18,7 @@ export interface ILaunch {
   mission_name: string;
   launch_date_utc: string;
   flight_number: number;
-  details: string;
+  details: string | null;
   links: {
     mission_patch_small: string;
     wikipedia: string;

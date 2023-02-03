@@ -1,4 +1,4 @@
-import { Card, CardMedia, Box, Typography } from '@mui/material';
+import { Card, CardMedia, Box, Typography, Tooltip } from '@mui/material';
 import { ILaunch } from 'redux/constants';
 
 function LaunchItem(props: ILaunch) {
@@ -37,9 +37,12 @@ function LaunchItem(props: ILaunch) {
         <Typography variant='body2' color='text.secondary' component='div'>
           Flight number: {flight_number}
         </Typography>
-        <Typography variant='body2' color='text.secondary' component='div' noWrap>
-          {details}
-        </Typography>
+        <Tooltip title={details}>
+          <Typography variant='body2' color='text.secondary' component='div' noWrap>
+            {details}
+          </Typography>
+        </Tooltip>
+
         <Typography
           variant='caption'
           display='block'

@@ -1,4 +1,7 @@
-function LoadingItem() {
+function LoadingItem({ canLoadMore }: any) {
+  if (!canLoadMore) {
+    return null;
+  }
   return (
     <div
       style={{

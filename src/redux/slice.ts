@@ -1,10 +1,12 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { FetchLaunchesPayload, RootStateType, ILaunch } from './constants';
+import { LIMIT_REQUEST } from 'appConstants';
 
 const INIT_STATE: RootStateType = {
   isLoading: false,
   errorMessage: '',
   launches: [],
+  canLoadMore: true,
 };
 
 const rootSlice = createSlice({
@@ -23,6 +25,7 @@ const rootSlice = createSlice({
         isLoading: false,
         launches: [...state.launches, ...action.payload],
         errorMessage: '',
+        canLoadMore: action.payload.length === LIMIT_REQUEST,
       };
     },
     fetchLaunchesFailure: (state) => {
